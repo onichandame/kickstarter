@@ -1,11 +1,12 @@
 PACK_MAN=""
-PACKAGES="python3 cmake gcc make npm"
+PACKAGES="python3 cmake gcc make nodejs"
 if [ -n "$(command -v apt)" ]
 then
   PACK_MAN="apt"
   PACKAGES=$PACKAGES:" python3-dev g++"
 elif [ -n "$(command -v yum)" ]
 then
+  curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
   PACKAGES=$PACKAGES" python3-devel gcc-c++"
   PACK_MAN="yum"
 fi
