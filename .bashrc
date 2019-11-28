@@ -204,26 +204,26 @@ alias la='ls -A'                              # all but . and ..
 # alias cd=cd_func
 #
 # run port forwarding at boot
-source /home/xiao/Programs/git/ROOT/bin/thisroot.sh
+# source /home/xiao/Programs/git/ROOT/bin/thisroot.sh
 export PS1="\[\033[38;5;172m\][\t] \[\033[38;5;171m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput sgr0)\]\[\033[38;5;226m\]\W\[$(tput sgr0)\]\[\033[38;5;15m\]\\$\[$(tput sgr0)\]"
-export PATH="/usr/local/texlive/2018/bin/x86_64-linux":$PATH
+# export PATH="/usr/local/texlive/2018/bin/x86_64-linux":$PATH
 export PATH="/home/xiao/.local/bin":$PATH
-export PATH="/home/xiao/Programs/git/mpich2/bin":$PATH
-export PATH="/home/xiao/Programs/node/bin":$PATH
+# export PATH="/home/xiao/Programs/git/mpich2/bin":$PATH
+# export PATH="/home/xiao/Programs/node/bin":$PATH
 #
 # fixes chinese characters in zip files
 export UNZIP="-O CP936"
 export ZIPINFO="-O CP936"
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/xiao/Programs/google-cloud-sdk/path.bash.inc' ]; then . '/home/xiao/Programs/google-cloud-sdk/path.bash.inc'; fi
+# if [ -f '/home/xiao/Programs/google-cloud-sdk/path.bash.inc' ]; then . '/home/xiao/Programs/google-cloud-sdk/path.bash.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/home/xiao/Programs/google-cloud-sdk/completion.bash.inc' ]; then . '/home/xiao/Programs/google-cloud-sdk/completion.bash.inc'; fi
+# if [ -f '/home/xiao/Programs/google-cloud-sdk/completion.bash.inc' ]; then . '/home/xiao/Programs/google-cloud-sdk/completion.bash.inc'; fi
  
 # PATH for MCNP executables
-export PATH
-PATH="/home/xiao/Programs/MCNP/MCNP_CODE/bin":$PATH
+# export PATH
+# PATH="/home/xiao/Programs/MCNP/MCNP_CODE/bin":$PATH
  
  
 # Increase the stacksize 
