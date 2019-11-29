@@ -21,13 +21,12 @@ then
   fi
 fi
 sudo $PACK_MAN install $PACKAGES -y
-VI="$(whereis vi)"
-VIM="$(whereis vim)"
+VI="$(which vi)"
+VIM="$(which vim)"
 if [ -n $VI ]
 then
   sudo rm $VI
 else
-then
   VI="/usr/bin/vi"
 fi
 if [ -z $VIM ]
