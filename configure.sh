@@ -1,5 +1,5 @@
 PACK_MAN=""
-PACKAGES="python3 cmake gcc make nodejs"
+PACKAGES="vim python3 cmake gcc make nodejs"
 if [ -n "$(command -v apt)" ]
 then
   PACK_MAN="apt"
@@ -21,6 +21,20 @@ then
   fi
 fi
 sudo $PACK_MAN install $PACKAGES -y
+VI="$(whereis vi)"
+VIM="$(whereis vim)"
+if [ -n $VI ]
+then
+  sudo rm $VI
+else
+then
+  VI="/usr/bin/vi"
+fi
+if [ -z $VIM ]
+then
+  VIM="/usr/bin/vim"
+fi
+sudo ln -s $VIM $VI
 
 git submodule update --init --recursive
 cd .vim/bundle/YouCompleteMe
