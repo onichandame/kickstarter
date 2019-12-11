@@ -23,11 +23,11 @@ bash 4+, apt/yum if you want to install packages through package manager
 
 - **--desktop** Default. Enables all defaults and adds g++, python3, vim and desktop vim configuration
 - **--server** If specified, enables all defaults and adds g++, python, python3, vim and server vim configuration
-- **--default** If specified without *--desktop* or *--server*, enables only cmake, gcc and make
+- **--default** If specified, enables only cmake, gcc and make
 - **--no-cmake** If specified, don't try to install cmake
 - **--no-make** If specified, don't try to install make
 - **--no-gcc** If specified, don't try to install gcc
-- **--g++** If specified without *--no-gcc*, enables g++
+- **--g++** If specified, installs g++
 - **--python** If specified enables python2
 - **--python3** If specified enables python3
 - **--vim** If specified installs vim
@@ -36,4 +36,4 @@ bash 4+, apt/yum if you want to install packages through package manager
 
 note1: if multiple options from *default*, *desktop* and *server* are specified, only the first one takes effect.
 
-note2: if a meta option conflicts with a basic option, the basic option overloads the meta one. e.g. *desktop* and *no-gcc* are both specified, all *desktop* options will be enabled but gcc.
+note2: if a meta option conflicts with a basic option, the basic option overloads the meta one. e.g. when *desktop* and *no-gcc* are both specified, all *desktop* options will be enabled but gcc.
