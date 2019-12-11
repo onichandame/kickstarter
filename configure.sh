@@ -292,7 +292,7 @@ install_vim () {
   then
     python3 configure.py --fancy-vim
   else
-    python3 configure.py
+    python3 configure.py --no-fancy-vim
   fi
   if [ $? -ne 0 ]
   then
