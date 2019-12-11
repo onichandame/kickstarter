@@ -178,11 +178,27 @@ install_pkg () {
     then
       PACKAGES+="g++ "
     fi
+    if [ "${FLAG[PYTHON]}" = true ]
+    then
+      PACKAGES+="python-dev "
+    fi
+    if [ "${FLAG[PYTHON3]}" = true ]
+    then
+      PACKAGES+="python3-dev "
+    fi
   elif [ -n "$(command -v yum)" ]
   then
     if [ "${FLAG[CXX]}" = true ]
     then
       PACKAGES+="gcc-c++ "
+    fi
+    if [ "${FLAG[PYTHON]}" = true ]
+    then
+      PACKAGES+="python-devel "
+    fi
+    if [ "${FLAG[PYTHON3]}" = true ]
+    then
+      PACKAGES+="python3-devel "
     fi
   fi
 
