@@ -207,7 +207,7 @@ alias la='ls -A'                              # all but . and ..
 # source /home/xiao/Programs/git/ROOT/bin/thisroot.sh
 export PS1="\[\033[38;5;172m\][\t] \[\033[38;5;171m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\[$(tput sgr0)\]\[\033[38;5;226m\]\W\[$(tput sgr0)\]\[\033[38;5;15m\]\\$\[$(tput sgr0)\]"
 # export PATH="/usr/local/texlive/2018/bin/x86_64-linux":$PATH
-export PATH="/home/xiao/.local/bin":$PATH
+export PATH=$HOME"/.local/bin":$PATH
 # export PATH="/home/xiao/Programs/git/mpich2/bin":$PATH
 # export PATH="/home/xiao/Programs/node/bin":$PATH
 #
