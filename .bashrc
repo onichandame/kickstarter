@@ -228,3 +228,6 @@ export ZIPINFO="-O CP936"
  
 # Increase the stacksize 
 ulimit -s unlimited
+
+# Set the TERM to fix screen issue
+export TERM=xterm-256color
