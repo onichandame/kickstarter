@@ -2,7 +2,7 @@
 
 # global flag switching on/off features
 
-declare -A CONF
+declare -A FLAG
 FLAG[CMAKE]=
 FLAG[MAKE]=
 FLAG[GCC]=
@@ -134,16 +134,21 @@ main(){
   # install packages
   install_pkg
 
+  # copy .bashrc
+  if [ "${FLAG[BASHRC]}" = true ]
+  then
+    echo "copying .bashrc to your home! Are you sure!(Y/y)"
+    read -n1 COMMAND
+    if [ "$COMMAND" = "Y" ] || [ "$COMMADN" = "y" ]
+    then
+      cp -f .bashrc $HOME/.bashrc
+    fi
+  fi
+
   # install vim
   if [ "${FLAG[VIM]}" = true ]
   then
     install_vim
-  fi
-
-  # copy .bashrc
-  if [ "${FLAG[BASHRC]}" = true ]
-  then
-    cp -f .bashrc $HOME/.bashrc
   fi
 
   echo "Your environment has been set. Happy Linuxing!"

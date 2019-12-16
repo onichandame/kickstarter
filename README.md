@@ -37,3 +37,5 @@ bash 4+, apt/yum if you want to install packages through package manager
 note1: if multiple options from *default*, *desktop* and *server* are specified, only the first one takes effect.
 
 note2: if a meta option conflicts with a basic option, the basic option overloads the meta one. e.g. when *desktop* and *no-gcc* are both specified, all *desktop* options will be enabled but gcc.
+
+note3: if any of *desktop*, *fancy-vim* o
