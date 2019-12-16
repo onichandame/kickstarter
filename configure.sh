@@ -104,7 +104,7 @@ main(){
     then
       FLAG[FANCY_VIM]=true
     fi
-  elif [ "$META " = server ]
+  elif [ "$META" = server ]
   then
     if [ -z "${FLAG[GXX]}" ]
     then
