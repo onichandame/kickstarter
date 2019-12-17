@@ -225,13 +225,13 @@ install_vim () {
   then
     return 1
   fi
-  git submodule update --remote --init vim
-  cd vim
+  git submodule update --remote --init --recursive
+  cd install_from_source
   if [ "${FLAG[FANCY_VIM]}" = true ]
   then
-    python3 configure.py --fancy-vim
+    python3 configure.py --vim --fancy-vim
   else
-    python3 configure.py --no-fancy-vim
+    python3 configure.py --vim --no-fancy-vim
   fi
   if [ $? -ne 0 ]
   then
