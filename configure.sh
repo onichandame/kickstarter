@@ -226,6 +226,11 @@ install_vim () {
     return 1
   fi
   git submodule update --remote --init --recursive
+  if [ "$?" -ne 0 ]
+  then
+    echo "fetching submodule failed"
+    exit 1
+  fi
   cd install_from_source
   if [ "${FLAG[FANCY_VIM]}" = true ]
   then
