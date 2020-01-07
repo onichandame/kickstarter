@@ -2,11 +2,67 @@
 
 This repo contains basic configuration files for a Linux environment.
 
-This script basically installs several essential tools using your system's default package manager and installs vim from source. details of vim installation can be found at [README.md](https://github.com/onichandame/vim-configure/README.md)
+This script basically installs and configures several essential tools using your system's default package manager or build from source. Several modes can be chosen
 
 # Author
 
 Xiao Zhang
+
+# Mode
+
+Each mode corresponds to one use case. For example, if you just fresh installed a Linux desktop and wished to have vim configured, run `.\/configure --desktop`
+
+## Desktop
+
+triggered by `--desktop`
+
+installs the following things:
+- gcc
+- make
+- cmake
+- g++
+- python3
+- vim
+- node(for vim plugin YCM)
+
+configures as described below:
+- vim: install all plugins
+
+## Node Server
+
+triggered by `--node`
+
+installs the following things:
+- gcc
+- g++
+- make
+- cmake
+- node
+- vim
+- python3
+
+configures as described below:
+- vim: installs basic plugins
+
+## PostgreSQL Server
+
+triggered by `--pgsql`
+
+installs the fowllowing things:
+- gcc
+- g++
+- make
+- cmake
+- vim
+- python3
+- bison
+- flex
+- openssl
+- readline
+- pgsql
+
+configures as described below:
+- pgsql: start on reboot
 
 # Pre-requisite
 
