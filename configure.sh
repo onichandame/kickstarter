@@ -2,21 +2,14 @@
 
 # global flag switching on/off features
 
-declare -A FLAG
-FLAG[CMAKE]=
-FLAG[MAKE]=
-FLAG[GCC]=
-FLAG[PYTHON]=
-FLAG[PYTHON3]=
-FLAG[VIM]=
-FLAG[FANCY_VIM]=
-FLAG[CXX]=
-FLAG[BASHRC]=
+declare -A APP_PACKMAN
+declare -A APP_SOURCE
+
+BASHRC=
 
 main(){
 
-  declare -A ARGS
-  META=desktop
+  META=
   META_SET=
 
   # parse arguments
@@ -29,99 +22,59 @@ main(){
         META=desktop
         META_SET=true
       fi
-    elif [ "$PARAM" = "--server" ]
+    elif [ "$PARAM" = "--node" ]
     then
       if [ -z "$META_SET"]
       then
         META=server
         META_SET=true
       fi
-    elif [ "$PARAM" = "--default" ]
-    then
-      if [ -z "$META_SET" ]
-      then
-        META=default
-        META_SET=true
-      fi
-    elif [ "$PARAM" = "--no-cmake" ]
-    then
-        FLAG[CMAKE]=false
-    elif [ "$PARAM" = "--no-make" ]
-    then
-        FLAG[MAKE]=false
-    elif [ "$PARAM" = "--no-gcc" ]
-    then
-        FLAG[GCC]=false
-    elif [ "$PARAM" = "--g++" ]
-    then
-        FLAG[GCC]=true
-    elif [ "$PARAM" = "--python" ]
-    then
-        FLAG[PYTHON]=true
-    elif [ "$PARAM" = "--python3" ]
-    then
-        FLAG[PYTHON3]=true
-    elif [ "$PARAM" = "--vim" ]
-    then
-        FLAG[VIM]=true
-    elif [ "$PARAM" = "--fancy-vim" ]
-    then
-        FLAG[FANCY_VIM]=true
     elif [ "$PARAM" = "--bashrc" ]
     then
-        FLAG[BASHRC]=true
+      BASHRC=true
+    elif [ "$PARAM" = "--pgsql" ]
+    then
+      if [ -z "$META_SET"]
+      then
+        META=pgsql
+        META_SET=true
+      fi
     fi
   done
 
   # unpack meta options
-  if [ -z "${FLAG[GCC]}" ]
-  then
-    FLAG[GCC]=true
-  fi
-  if [ -z "${FLAG[MAKE]}" ]
-  then
-    FLAG[MAKE]=true
-  fi
-  if [ -z "${FLAG[CMAKE]}" ]
-  then
-    FLAG[CMAKE]=true
-  fi
   if [ "$META" = desktop ]
   then
-    if [ -z "${FLAG[GXX]}" ]
-    then
-      FLAG[GXX]=true
-    fi
-    if [ -z "${FLAG[PYTHON3]}" ]
-    then
-      FLAG[PYTHON3]=true
-    fi
-    if [ -z "${FLAG[VIM]}" ]
-    then
-      FLAG[VIM]=true
-    fi
-    if [ -z "${FLAG[FANCY_VIM]}" ]
-    then
-      FLAG[FANCY_VIM]=true
-    fi
-  elif [ "$META" = server ]
+    APP_PACKMAN[GCC]=true
+    APP_PACKMAN[MAKE]=true
+    APP_PACKMAN[CMAKE]=true
+    APP_PACKMAN[CXX]=true
+    APP_PACKMAN[PYTHON3]=true
+    APP_SOURCE[VIM]=true
+    APP_SOURCE[FANCY_VIM]=true
+    APP_SOURCE[NODE]=true
+  elif [ "$META" = node ]
   then
-    if [ -z "${FLAG[GXX]}" ]
-    then
-      FLAG[GXX]=true
-    fi
-    if [ -z "${FLAG[PYTHON]}" ]
-    then
-      FLAG[PYTHON]=true
-    fi
-    if [ -z "${FLAG[PYTHON3]}" ]
-    then
-      FLAG[PYTHON3]=true
-    fi
-    if [ -z "${FLAG[VIM]}" ]
-    then
-      FLAG[VIM]=true
-    fi
+    APP_PACKMAN[GCC]=true
+    APP_PACKMAN[CXX]=true
+    APP_PACKMAN[MAKE]=true
+    APP_PACKMAN[CMAKE]=true
+    APP_PACKMAN[PYTHON3]=true
+    APP_SOURCE[NODE]=true
+    APP_SOURCE[VIM]=true
+  elif [ "$META" = pgsql ]
+  then
+    APP_PACKMAN[GCC]=true
+    APP_PACKMAN[CXX]=true
+    APP_PACKMAN[MAKE]=true
+    APP_PACKMAN[CMAKE]=true
+    APP_PACKMAN[PYTHON3]=true
+    APP_PACKMAN[BISON]=true
+    APP_PACKMAN[FLEX]=true
+    APP_PACKMAN[OPENSSL]=true
+    APP_PACKMAN[READLINE]=true
+    APP_SOURCE[VIM]=true
+    APP_SOURCE[PGSQL]=true
   fi
 
   # check package manager
@@ -131,79 +84,74 @@ main(){
     exit 1
   fi
 
-  # install packages
-  install_pkg
-
   # copy .bashrc
-  if [ "${FLAG[BASHRC]}" = true ]
+  if [ "$BASHRC" = true ]
   then
     echo "copying .bashrc to your home! Are you sure!(Y/y)"
     read -n1 COMMAND
     if [ "$COMMAND" = "Y" ] || [ "$COMMADN" = "y" ]
     then
-      cp -f .bashrc $HOME/.bashrc
+      cp -f bashrc $HOME/.bashrc
     fi
   fi
 
-  # install vim
-  if [ "${FLAG[VIM]}" = true ]
-  then
-    install_vim
-  fi
-
-  echo "Your environment has been set. Happy Linuxing!"
+  # install packages
+  install_pkg
 }
 
 install_pkg () {
-  # comprehend list of packages
+  # comprehend list of packages by packman
   PACKAGES=""
-  if [ "${FLAG[GCC]}" = true ]
+  if [ "${APP_PACKMAN[GCC]}" = true ]
   then
     PACKAGES+="gcc "
   fi
-  if [ "${FLAG[MAKE]}" = true ]
+  if [ "${APP_PACKMAN[CXX]}" = true ]
   then
-    PACKAGES+="make "
-  fi
-  if [ "${FLAG[CMAKE]}" = true ]
-  then
-    PACKAGES+="cmake "
-  fi
-  if [ "${FLAG[PYTHON]}" = true ]
-  then
-    PACKAGES+="python "
-  fi
-  if [ "${FLAG[PYTHON3]}" = true ]
-  then
-    PACKAGES+="python3 "
-  fi
-  if [ -n "$(command -v apt)" ]
-  then
-    if [ "${FLAG[CXX]}" = true ]
+    if [ -n "$(command -v apt)" ]
     then
-      PACKAGES+="g++ "
-    fi
-    if [ "${FLAG[PYTHON]}" = true ]
-    then
-      PACKAGES+="python-dev "
-    fi
-    if [ "${FLAG[PYTHON3]}" = true ]
-    then
-      PACKAGES+="python3-dev "
-    fi
-  elif [ -n "$(command -v yum)" ]
-  then
-    if [ "${FLAG[CXX]}" = true ]
+      PACKAGES+="gcc "
+    elif [ -n "$(command -v yum)" ]
     then
       PACKAGES+="gcc-c++ "
     fi
-    if [ "${FLAG[PYTHON]}" = true ]
+  fi
+  if [ "${APP_PACKMAN[MAKE]}" = true ]
+  then
+    PACKAGES+="make "
+  fi
+  if [ "${APP_PACKMAN[CMAKE]}" = true ]
+  then
+    PACKAGES+="cmake "
+  fi
+  if [ "${APP_PACKMAN[PYTHON]}" = true ]
+  then
+    PACKAGES+="python "
+  fi
+  if [ "${APP_PACKMAN[PYTHON3]}" = true ]
+  then
+    PACKAGES+="python3 "
+  fi
+  if [ "${APP_PACKMAN[BISON]}" = true ]
+  then
+    PACKAGES+="bison "
+  fi
+  if [ "${APP_PACKMAN[FLEX]}" = true ]
+  then
+    PACKAGES+="flex "
+  fi
+  if [ "${APP_PACKMAN[OPENSSL]}" = true ]
+  then
+    PACKAGES+="openssl "
+  fi
+  if [ "${APP_PACKMAN[READLINE]}" = true ]
+  then
+    if [ -n "$(command -v apt)" ]
     then
-      PACKAGES+="python-devel "
-    fi
-    if [ "${FLAG[PYTHON3]}" = true ]
+      PACKAGES+="libreadline-dev "
+    elif [ -n "$(command -v yum)" ]
     then
-      PACKAGES+="python3-devel "
+      PACKAGES+="readline-devel "
     fi
   fi
 
@@ -218,33 +166,37 @@ install_pkg () {
   fi
 
   sudo $PACK_MAN install $PACKAGES -y
-}
 
-install_vim () {
-  if [ "${FLAG[VIM]}" != true ]
+  PACKAGES=
+  if [ "${APP_SOURCE[VIM]}" = true ]
   then
-    return 1
+    PACKAGES+="--vim "
   fi
-  git submodule update --remote --init --recursive
-  if [ "$?" -ne 0 ]
+  if [ "${APP_SOURCE[FANCY_VIM]}" = true ]
   then
-    echo "fetching submodule failed"
-    exit 1
+    PACKAGES+="--fancy-vim "
   fi
-  cd install_from_source
-  if [ "${FLAG[FANCY_VIM]}" = true ]
+  if [ "${APP_SOURCE[NODE]}" = true ]
   then
-    python3 configure.py --vim --fancy-vim
-  else
-    python3 configure.py --vim --no-fancy-vim
+    PACKAGES+="--node "
   fi
-  if [ $? -ne 0 ]
+  if [ "${APP_SOURCE[PGSQL]}" = true ]
   then
+    PACKAGES+="--pgsql "
+  fi
+
+  if [ -n "$PACKAGES" ]
+  then
+    cd install_from_source
+    python3 configure.py ${PACKAGES}
+    if [ $? -ne 0 ]
+    then
+      cd -
+      echo "Installation failed. Try removing all previously-installed applications then retry"
+      exit 1
+    fi
     cd -
-    echo "Vim installation failed. Try debugging it or contact the author"
-    exit 1
   fi
-  cd -
 }
 
 main "$@"; exit

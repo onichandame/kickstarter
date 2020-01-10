@@ -1,59 +1,98 @@
-# Home Directory
+# System Manager
 
-This repo contains basic configuration files for a Linux environment.
-
-This script basically installs and configures several essential tools using your system's default package manager or build from source. Several modes can be chosen
+Auto management of any system can be acieved using this script. Currently only Linux is supported.
 
 # Author
 
 Xiao Zhang
 
+# Architecture
+
+A system is defined as:
+- An integrated bunch of different utilities delevering a service
+- Consisting of hardware part and software part
+- Hardware part is a general purpose computer with several peripherals
+- Software part is composed of OS and applications
+
+The jobs this module is responsible of is managing the applications running on the system. Hardware and OS management is out of the scope.
+
+A complete management utility must provides the following functions:
+1. Initialization of the system
+2. Auto backup of sensitive data
+3. Monitoring the system status
+4. Auto-restart on failure
+5. Rollback to previous version if several retries of step 4 failed
+
+Based on the purposes of the systems, several modes are provided.
+
 # Mode
 
-Each mode corresponds to one use case. For example, if you just fresh installed a Linux desktop and wished to have vim configured, run `.\/configure --desktop`
+Each mode corresponds to one use case. For example, if you just fresh installed a Linux desktop and wished to have vim configured, run `./configure --desktop`
 
 ## Desktop
 
 triggered by `--desktop`
 
-installs the following things:
+### Initialization
+installs the following things if not found:
 - gcc
 - make
 - cmake
 - g++
 - python3
-- vim
+- vim(with all plugins)
 - node(for vim plugin YCM)
 
-configures as described below:
-- vim: install all plugins
+### Backup
+  Backup the entire $HOME directory after specifying the storage location
+
+  backup requires tar, gzip, rsync to function
+
+### Monitor
+  No monitoring process is run as it is desktop which is controlled directly by human.
+
+### Auto-restart
+  Nothing is done for the above reason
+
+### Rollback
+  Nothing is done for the above reason
 
 ## Node Server
 
 triggered by `--node`
 
+### Initialization
 installs the following things:
 - gcc
 - g++
 - make
 - cmake
 - node
-- vim
+- vim(with basic plugins)
 - python3
 
-configures as described below:
-- vim: installs basic plugins
+### Backup
+  Backup the entire $HOME directory after specifying the storage location
+
+  backup requires tar, gzip, rsync to function
+
+### Monitor
+
+### Auto-restart
+
+### Rollback
 
 ## PostgreSQL Server
 
 triggered by `--pgsql`
 
+### Initialization
 installs the fowllowing things:
 - gcc
 - g++
 - make
 - cmake
-- vim
+- vim(with basic plugins)
 - python3
 - bison
 - flex
@@ -61,8 +100,16 @@ installs the fowllowing things:
 - readline
 - pgsql
 
-configures as described below:
-- pgsql: start on reboot
+### Backup
+  Backup the entire $HOME directory after specifying the storage location
+
+  backup requires tar, gzip, rsync to function
+
+### Monitor
+
+### Auto-restart
+
+### Rollback
 
 # Pre-requisite
 
@@ -73,25 +120,7 @@ bash 4+, apt/yum if you want to install packages through package manager
 1. clone this repo to your home directory. Normally it is **$HOME**.
 2. make sure you have backed up *.bashrc*, *.vimrc* and *.vim/* before proceeding
 3. read *configure.sh* before proceeding as you should never trust a script before reading it
-4. run *.\/configure.sh* with arguments
+4. run *.\/configure.sh* with mode
 
-# Configuration
-
-- **--desktop** Default. Enables all defaults and adds g++, python3, vim and desktop vim configuration
-- **--server** If specified, enables all defaults and adds g++, python, python3, vim and server vim configuration
-- **--default** If specified, enables only cmake, gcc and make
-- **--no-cmake** If specified, don't try to install cmake
-- **--no-make** If specified, don't try to install make
-- **--no-gcc** If specified, don't try to install gcc
-- **--g++** If specified, installs g++
-- **--python** If specified enables python2
-- **--python3** If specified enables python3
-- **--vim** If specified installs vim
-- **--fancy-vim** If specified installs vim and configures vim for normal desktop user
-- **--bashrc** If specified, overwrite your bashrc.
-
-note1: if multiple options from *default*, *desktop* and *server* are specified, only the first one takes effect.
-
-note2: if a meta option conflicts with a basic option, the basic option overloads the meta one. e.g. when *desktop* and *no-gcc* are both specified, all *desktop* options will be enabled but gcc.
-
-note3: if any of *desktop*, *fancy-vim* o
+note1: only the first specified mode has effect, the latter modes will be ignored.
+note2: `--bashrc` needs to be specified if $HOME/.bashrc needs to be installed
