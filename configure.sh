@@ -73,6 +73,7 @@ main(){
     APP_PACKMAN[FLEX]=true
     APP_PACKMAN[OPENSSL]=true
     APP_PACKMAN[READLINE]=true
+    APP_PACKMAN[ZLIB]=true
     APP_SOURCE[VIM]=true
     APP_SOURCE[PGSQL]=true
   fi
@@ -152,6 +153,16 @@ install_pkg () {
     elif [ -n "$(command -v yum)" ]
     then
       PACKAGES+="readline-devel "
+    fi
+  fi
+  if [ "${APP_PACKMAN[ZLIB]}" = true ]
+  then
+    if [ -n "$(command -v apt)" ]
+    then
+      PACKAGES+="zlib1g"
+    elif [ -n "$(command -v yum)" ]
+    then
+      PACKAGES+="zlib-devel "
     fi
   fi
 

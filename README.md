@@ -98,6 +98,7 @@ installs the fowllowing things:
 - flex
 - openssl
 - readline
+- zlib
 - pgsql
 
 ### Backup
