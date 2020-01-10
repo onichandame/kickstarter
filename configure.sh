@@ -90,7 +90,7 @@ main(){
   then
     echo "copying .bashrc to your home! Are you sure!(Y/y)"
     read -n1 COMMAND
-    if [ "$COMMAND" = "Y" ] || [ "$COMMADN" = "y" ]
+    if [ "$COMMAND" = "Y" ] || [ "$COMMAND" = "y" ]
     then
       cp -f bashrc $HOME/.bashrc
     fi
