@@ -143,7 +143,13 @@ install_pkg () {
   fi
   if [ "${APP_PACKMAN[OPENSSL]}" = true ]
   then
-    PACKAGES+="openssl "
+    if [ -n "$(command -v apt)" ]
+    then
+      PACKAGES+="openssl "
+    elif [ -n "$(command -v yum)" ]
+    then
+      PACKAGES+="openssl-devel "
+    fi
   fi
   if [ "${APP_PACKMAN[READLINE]}" = true ]
   then
