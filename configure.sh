@@ -22,7 +22,7 @@ main(){
         META=desktop
         META_SET=true
       fi
-    elif [ "$PARAM" = "--node" ]
+    elif [ "$PARAM" = "--server" ]
     then
       if [ -z "$META_SET"]
       then
@@ -32,13 +32,6 @@ main(){
     elif [ "$PARAM" = "--bashrc" ]
     then
       BASHRC=true
-    elif [ "$PARAM" = "--pgsql" ]
-    then
-      if [ -z "$META_SET"]
-      then
-        META=pgsql
-        META_SET=true
-      fi
     fi
   done
 
@@ -53,7 +46,7 @@ main(){
     APP_SOURCE[VIM]=true
     APP_SOURCE[FANCY_VIM]=true
     APP_SOURCE[NODE]=true
-  elif [ "$META" = node ]
+  elif [ "$META" = server ]
   then
     APP_PACKMAN[GCC]=true
     APP_PACKMAN[CXX]=true
@@ -62,20 +55,6 @@ main(){
     APP_PACKMAN[PYTHON3]=true
     APP_SOURCE[NODE]=true
     APP_SOURCE[VIM]=true
-  elif [ "$META" = pgsql ]
-  then
-    APP_PACKMAN[GCC]=true
-    APP_PACKMAN[CXX]=true
-    APP_PACKMAN[MAKE]=true
-    APP_PACKMAN[CMAKE]=true
-    APP_PACKMAN[PYTHON3]=true
-    APP_PACKMAN[BISON]=true
-    APP_PACKMAN[FLEX]=true
-    APP_PACKMAN[OPENSSL]=true
-    APP_PACKMAN[READLINE]=true
-    APP_PACKMAN[ZLIB]=true
-    APP_SOURCE[VIM]=true
-    APP_DOCKER[PGSQL]=true
   fi
 
   # check package manager
@@ -96,11 +75,11 @@ main(){
     fi
   fi
 
-  # install packages from source
-  install_src
-
   # install packages from docker
   install_docker
+
+  # install packages from source
+  install_src
 }
 
 install_src () {
@@ -174,6 +153,10 @@ install_src () {
       PACKAGES+="zlib-devel "
     fi
   fi
+  if [ "${APP_SOURCE[NODE]}" = true ]
+  then
+    PACKAGES+="nasm "
+  fi
 
   # get package manager
   PACK_MAN=
@@ -218,14 +201,14 @@ install_src () {
 install_docker() {
   if [ -n "$(command -v apt)" ]
   then
-    sudo apt-get remove docker docker-engine docker.io containerd runc
-    sudo apt-get update
+    sudo apt-get remove docker docker-engine docker.io containerd runc -y
+    sudo apt-get update -y
     sudo apt-get install \
          apt-transport-https \
          ca-certificates \
          curl \
          gnupg-agent \
-         software-properties-common
+         software-properties-common -y
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     ARCH="$(arch)"
 				sudo add-apt-repository \
@@ -233,7 +216,7 @@ install_docker() {
     $(lsb_release -cs) \
     stable"
     sudo apt-get update
-    sudo apt-get install docker-ce docker-ce-cli containerd.io
+    sudo apt-get install docker-ce docker-ce-cli containerd.io -y
   elif [ -n "$(command -v yum)" ]
   then
     sudo yum remove docker \
@@ -243,14 +226,14 @@ install_docker() {
                     docker-latest \
                     docker-latest-logrotate \
                     docker-logrotate \
-                    docker-engine
+                    docker-engine -y
 				sudo yum install -y yum-utils \
                         device-mapper-persistent-data \
-                        lvm2
+                        lvm2 -y
     sudo yum-config-manager \
          --add-repo \
          https://download.docker.com/linux/centos/docker-ce.repo
-    sudo yum install docker-ce docker-ce-cli containerd.io
+    sudo yum install docker-ce docker-ce-cli containerd.io -y
   fi
   echo Docker is now installed on the system. Try `docker run hello-world` to test its functionality
 }
