@@ -43,9 +43,7 @@ main(){
     APP_PACKMAN[CMAKE]=true
     APP_PACKMAN[CXX]=true
     APP_PACKMAN[PYTHON3]=true
-    APP_SOURCE[VIM]=true
-    APP_SOURCE[FANCY_VIM]=true
-    APP_SOURCE[NODE]=true
+    APP_PACKMAN[VIM]=true
   elif [ "$META" = server ]
   then
     APP_PACKMAN[GCC]=true
@@ -147,11 +145,15 @@ install_src () {
   then
     if [ -n "$(command -v apt)" ]
     then
-      PACKAGES+="zlib1g"
+      PACKAGES+="zlib1g "
     elif [ -n "$(command -v yum)" ]
     then
       PACKAGES+="zlib-devel "
     fi
+  fi
+  if [ "${APP_PACKMAN[VIM]}" = true ]
+  then
+    PACKAGES+="vim "
   fi
   if [ "${APP_SOURCE[NODE]}" = true ]
   then
