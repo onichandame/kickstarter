@@ -43,7 +43,9 @@ main(){
     APP_PACKMAN[CMAKE]=true
     APP_PACKMAN[CXX]=true
     APP_PACKMAN[PYTHON3]=true
-    APP_PACKMAN[VIM]=true
+    APP_SOURCE[NODE]=true
+    APP_SOURCE[VIM]=true
+    APP_SOURCE[FANCY_VIM]=true
   elif [ "$META" = server ]
   then
     APP_PACKMAN[GCC]=true
@@ -51,8 +53,7 @@ main(){
     APP_PACKMAN[MAKE]=true
     APP_PACKMAN[CMAKE]=true
     APP_PACKMAN[PYTHON3]=true
-    APP_SOURCE[NODE]=true
-    APP_SOURCE[VIM]=true
+    APP_PACKMAN[VIM]=true
   fi
 
   # check package manager
