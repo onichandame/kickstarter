@@ -1,39 +1,21 @@
-# System Manager
+# Linux Kickstarter
 
-Auto management of any system can be acieved using this script. Currently only Linux is supported.
+Installs and configures several useful tools used in a fresh-installed Linux environment.
 
 # Author
 
 Xiao Zhang
 
-# Architecture
-
-A system is defined as:
-- An integrated bunch of different utilities delevering a service
-- Consisting of hardware part and software part
-- Hardware part is a general purpose computer with several peripherals
-- Software part is composed of OS and applications
-
-The jobs this module is responsible of is managing the applications running on the system. Hardware and OS management is out of the scope.
-
-A complete management utility must provides the following functions:
-1. Initialization of the system
-2. Auto backup of sensitive data
-3. Monitoring the system status
-4. Auto-restart on failure
-5. Rollback to previous version if several retries of step 4 failed
-
-Based on the purposes of the systems, several modes are provided.
-
 # Mode
 
-Each mode corresponds to one use case. For example, if you just fresh installed a Linux desktop and wished to have vim configured, run `./configure --desktop`
+There are 2 pre-set modes defining different sets of tools to be installed.
+- desktop: environment for everyday use
+- server: environment for robust, long-running server not often interferred by human
 
 ## Desktop
 
 triggered by `--desktop`
 
-### Initialization
 installs the following things if not found:
 - gcc
 - make
@@ -42,24 +24,11 @@ installs the following things if not found:
 - python3
 - vim(with all plugins)
 - node(for vim plugin YCM)
+- docker
 
-### Backup
-  Backup the entire $HOME directory after specifying the storage location
+## Server
 
-  backup requires tar, gzip, rsync to function
-
-### Monitor
-  No monitoring process is run as it is desktop which is controlled directly by human.
-
-### Auto-restart
-  Nothing is done for the above reason
-
-### Rollback
-  Nothing is done for the above reason
-
-## Node Server
-
-triggered by `--node`
+triggered by `--server`
 
 ### Initialization
 installs the following things:
@@ -70,51 +39,13 @@ installs the following things:
 - node
 - vim(with basic plugins)
 - python3
-
-### Backup
-  Backup the entire $HOME directory after specifying the storage location
-
-  backup requires tar, gzip, rsync to function
-
-### Monitor
-
-### Auto-restart
-
-### Rollback
-
-## PostgreSQL Server
-
-triggered by `--pgsql`
-
-### Initialization
-installs the fowllowing things:
-- gcc
-- g++
-- make
-- cmake
-- vim(with basic plugins)
-- python3
-- bison
-- flex
-- openssl
-- readline
-- zlib
-- pgsql
-
-### Backup
-  Backup the entire $HOME directory after specifying the storage location
-
-  backup requires tar, gzip, rsync to function
-
-### Monitor
-
-### Auto-restart
-
-### Rollback
+- docker
 
 # Pre-requisite
 
-bash 4+, apt/yum if you want to install packages through package manager
+bash 4+, apt/yum to install packages through package manager
+
+sudo permission as many packages need to be installed with root permission.
 
 # Usage
 
@@ -124,4 +55,4 @@ bash 4+, apt/yum if you want to install packages through package manager
 4. run *.\/configure.sh* with mode
 
 note1: only the first specified mode has effect, the latter modes will be ignored.
-note2: `--bashrc` needs to be specified if $HOME/.bashrc needs to be installed
+note2: `--bashrc` needs to be specified if $HOME/.bashrc needs to be overwritten

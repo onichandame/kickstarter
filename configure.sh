@@ -75,7 +75,7 @@ main(){
     APP_PACKMAN[READLINE]=true
     APP_PACKMAN[ZLIB]=true
     APP_SOURCE[VIM]=true
-    APP_SOURCE[PGSQL]=true
+    APP_DOCKER[PGSQL]=true
   fi
 
   # check package manager
@@ -96,11 +96,14 @@ main(){
     fi
   fi
 
-  # install packages
-  install_pkg
+  # install packages from source
+  install_src
+
+  # install packages from docker
+  install_docker
 }
 
-install_pkg () {
+install_src () {
   # comprehend list of packages by packman
   PACKAGES=""
   if [ "${APP_PACKMAN[GCC]}" = true ]
@@ -197,10 +200,6 @@ install_pkg () {
   then
     PACKAGES+="--node "
   fi
-  if [ "${APP_SOURCE[PGSQL]}" = true ]
-  then
-    PACKAGES+="--pgsql "
-  fi
 
   if [ -n "$PACKAGES" ]
   then
@@ -214,6 +213,46 @@ install_pkg () {
     fi
     cd -
   fi
+}
+
+install_docker() {
+  if [ -n "$(command -v apt)" ]
+  then
+    sudo apt-get remove docker docker-engine docker.io containerd runc
+    sudo apt-get update
+    sudo apt-get install \
+         apt-transport-https \
+         ca-certificates \
+         curl \
+         gnupg-agent \
+         software-properties-common
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    ARCH="$(arch)"
+				sudo add-apt-repository \
+    "deb [arch=$ARCH] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) \
+    stable"
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io
+  elif [ -n "$(command -v yum)" ]
+  then
+    sudo yum remove docker \
+                    docker-client \
+                    docker-client-latest \
+                    docker-common \
+                    docker-latest \
+                    docker-latest-logrotate \
+                    docker-logrotate \
+                    docker-engine
+				sudo yum install -y yum-utils \
+                        device-mapper-persistent-data \
+                        lvm2
+    sudo yum-config-manager \
+         --add-repo \
+         https://download.docker.com/linux/centos/docker-ce.repo
+    sudo yum install docker-ce docker-ce-cli containerd.io
+  fi
+  echo Docker is now installed on the system. Try `docker run hello-world` to test its functionality
 }
 
 main "$@"; exit
