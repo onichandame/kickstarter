@@ -259,7 +259,7 @@ install_docker() {
 import_keys() {
   if [ "${APP_PACKMAN[PIP]}" = true ]
   then
-    sudo pip install requests
+    sudo pip3 install requests
     python3 install_keys.py
   fi
 }
