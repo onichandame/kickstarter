@@ -43,6 +43,7 @@ main(){
     APP_PACKMAN[CMAKE]=true
     APP_PACKMAN[CXX]=true
     APP_PACKMAN[PYTHON3]=true
+    APP_PACKMAN[PIP]=true
     APP_SOURCE[NODE]=true
     APP_SOURCE[VIM]=true
     APP_SOURCE[FANCY_VIM]=true
@@ -53,6 +54,7 @@ main(){
     APP_PACKMAN[MAKE]=true
     APP_PACKMAN[CMAKE]=true
     APP_PACKMAN[PYTHON3]=true
+    APP_PACKMAN[PIP]=true
     APP_PACKMAN[VIM]=true
   fi
 
@@ -84,10 +86,13 @@ main(){
   install_docker
 
   # install packages from source
-  install_src
+  install_app
+
+  # import ssh keys from github
+  import_keys
 }
 
-install_src () {
+install_app () {
   # comprehend list of packages by packman
   PACKAGES=""
   if [ "${APP_PACKMAN[GCC]}" = true ]
@@ -161,6 +166,10 @@ install_src () {
   if [ "${APP_PACKMAN[VIM]}" = true ]
   then
     PACKAGES+="vim "
+  fi
+  if [ "${APP_PACKMAN[PIP]}" = true ]
+  then
+    PACKAGES+="python3-pip "
   fi
   if [ "${APP_SOURCE[NODE]}" = true ]
   then
@@ -245,6 +254,14 @@ install_docker() {
     sudo yum install docker-ce docker-ce-cli containerd.io -y
   fi
   echo Docker is now installed on the system. Try `docker run hello-world` to test its functionality
+}
+
+import_keys() {
+  if [ "${APP_PACKMAN[PIP]}" = true ]
+  then
+    sudo pip install requests
+    python3 install_keys.py
+  fi
 }
 
 main "$@"; exit
