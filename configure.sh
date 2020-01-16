@@ -74,6 +74,12 @@ main(){
     fi
   fi
 
+  # copy .vimrc
+  if [ "${APP_PACKMAN[VIM]}" = true ] || [ "${APP_SOURCE[VIM]}" = true ]
+  then
+    cp -f install_from_source/vimrc/vimrc $HOME/.vimrc
+  fi
+
   # install packages from docker
   install_docker
 
