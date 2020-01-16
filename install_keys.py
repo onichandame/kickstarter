@@ -27,3 +27,4 @@ with open(key_file, 'a') as f:
         f.write(key+'\r\n')
 
 os.chmod(key_file, stat.S_IRWXU)
+os.chmod(key_dir, stat.S_IRWXU)
