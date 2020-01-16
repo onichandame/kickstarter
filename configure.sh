@@ -44,6 +44,7 @@ main(){
     APP_PACKMAN[CXX]=true
     APP_PACKMAN[PYTHON3]=true
     APP_PACKMAN[PIP]=true
+    APP_PACKMAN[SCREEN]=true
     APP_SOURCE[NODE]=true
     APP_SOURCE[VIM]=true
     APP_SOURCE[FANCY_VIM]=true
@@ -56,6 +57,7 @@ main(){
     APP_PACKMAN[PYTHON3]=true
     APP_PACKMAN[PIP]=true
     APP_PACKMAN[VIM]=true
+    APP_PACKMAN[SCREEN]=true
   fi
 
   # check package manager
@@ -170,6 +172,10 @@ install_app () {
   if [ "${APP_PACKMAN[PIP]}" = true ]
   then
     PACKAGES+="python3-pip "
+  fi
+  if [ "${APP_PACKMAN[SCREEN]}" = true ]
+  then
+    PACKAGES+="screen "
   fi
   if [ "${APP_SOURCE[NODE]}" = true ]
   then
