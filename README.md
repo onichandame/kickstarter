@@ -1,16 +1,28 @@
-# Linux Kickstarter
+# Kickstarter
 
-Installs and configures several useful tools used in a fresh-installed Linux environment.
+Installs and configures several useful tools for different environments.
+
+Warning: When run on Linux, sudo permission is required therefore **please read the script before running!**
 
 # Author
 
 Xiao Zhang
 
+# Usage
+Ubuntu18+ or CentOS 7+
+```
+./configure.sh --desktop
+```
+Windows 10
+```
+.\configure.ps1 --desktop
+```
+
 # Mode
 
 There are 2 pre-set modes defining different sets of tools to be installed.
-- desktop: environment for everyday use
-- server: environment for robust, long-running server not often interferred by human
+- desktop: environment for everyday use and development
+- server: environment for production
 
 ## Desktop
 
@@ -22,26 +34,26 @@ installs the following things if not found:
 - cmake
 - g++
 - python3
-- vim(with all plugins)
-- node(for vim plugin YCM)
+- neovim(with all plugins)
+- nodejs(for vim plugin YCM)
 - docker
 
 ## Server
 
 triggered by `--server`
 
-### Initialization
 installs the following things:
-- gcc
-- g++
-- make
-- cmake
-- node
-- vim(with basic plugins)
 - python3
 - docker
 
 # Pre-requisite
+
+## Windows
+
+- powershell 5+ with core modules
+- .Net 4.5+
+
+## Linux
 
 bash 4+, apt/yum to install packages through package manager
 
@@ -49,9 +61,9 @@ sudo permission as many packages need to be installed with root permission.
 
 # Usage
 
-1. clone this repo to your home directory. Normally it is **$HOME**.
-2. make sure you have backed up *.bashrc*, *.vimrc* and *.vim/* before proceeding
-3. read *configure.sh* before proceeding as you should never trust a script before reading it
+1. clone this repo.
+2. make sure you have backed up *.bashrc*, *.vimrc*, *_vimrc*, *.vim/* and *vimfiles/* before proceeding. They are normally found under your $HOME directory.
+3. read the script before proceeding as you should never trust a script before reading it
 4. run *.\/configure.sh* with mode
 
 note1: only the first specified mode has effect, the latter modes will be ignored.
