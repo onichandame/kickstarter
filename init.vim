@@ -46,12 +46,6 @@ let mapleader = ","
 " toggle cursorline & cursorcolumn
 nmap <Leader>c :set cursorline! cursorcolumn!<CR>
 
-" map for ycm GOTO commands
-nmap <Leader>d :YcmCompleter GoToDeclaration<CR>
-nmap <Leader>f :YcmCompleter GoToDefinition<CR>
-nmap <Leader>i :YcmCompleter GoToInclude<CR>
-nmap <Leader>r :YcmCompleter GoToReferences<CR>
-
 " quick save and nav shortcuts
 nmap <leader>w :w<CR>
 nmap <leader>q :q<CR>
@@ -159,6 +153,8 @@ augroup resCur
   autocmd BufWinEnter * call ResCur()
 augroup END
 
+call plug#begin(stdpath('config').'/plugged')
+
 "enable plugins!!
 filetype plugin on
 
@@ -240,4 +236,5 @@ au BufRead * normal zR
 " markdown configuration
 let g:markdown_enable_spell_checking=0
 
-" ycm extra conf
+" Plugins
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
