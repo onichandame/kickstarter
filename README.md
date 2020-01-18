@@ -35,7 +35,6 @@ installs the following things if not found:
 - g++
 - python3
 - neovim(with all plugins)
-- nodejs(for vim plugin YCM)
 - docker
 
 ## Server

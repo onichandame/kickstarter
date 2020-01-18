@@ -1,6 +1,3 @@
-[submodule "install_from_source"]
-	path = install_from_source
-	url = https://github.com/onichandame/install_from_source.git
-[submodule "backup"]
-	path = backup
-	url = https://github.com/onichandame/backup.git
+[submodule "jobqueue"]
+	path = jobqueue
+	url = https://github.com/onichandame/jobqueue
