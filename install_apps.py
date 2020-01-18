@@ -12,6 +12,7 @@ def install_apps():
         cmd=[get_packman(), 'install'] + apps
     else:
         cmd=[get_packman(), 'install', '-y'] + apps
-    print(cmd)
-    if queue.run(cmd, stdout=subprocess.PIPE):
-        terminate('installation failed!')
+    if not queue.run(cmd, stdout=subprocess.PIPE):
+        terminate('installation failed')
+    if get_argv().desktop:
+        print('all done! now set alias for nvim and initiates it by following :h nvim-from-vim. the template configuration file init.vim is in this repo')

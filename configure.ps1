@@ -4,12 +4,13 @@ If ($Version.Major -lt 5) {
   echo PowerShell 5 or above is required
   exit
 }
-Set-ExecutionPolicy RemoteSigned -scope CurrentUser
-start powershell {Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')}
+if ( -NOT (Get-Command scoop -errorAction SilentlyContinue)) {
+  Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+  iwr -useb get.scoop.sh | iex | Out-Null
+}
 
 #install python
-scoop install python
+scoop install python | Out-Null
 
 #install packages according to arguments
-start powershell { python configure.py $args }
-
+python configure.py $args | Out-Null
