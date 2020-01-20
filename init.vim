@@ -1,3 +1,4 @@
+" legacy from vim
 set number
 set autoindent
 set cindent
@@ -153,8 +154,6 @@ augroup resCur
   autocmd BufWinEnter * call ResCur()
 augroup END
 
-call plug#begin(stdpath('config').'/plugged')
-
 "enable plugins!!
 filetype plugin on
 
@@ -237,4 +236,14 @@ au BufRead * normal zR
 let g:markdown_enable_spell_checking=0
 
 " Plugins
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin(stdpath('config').'/plugged')
+
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+call plug#end()
