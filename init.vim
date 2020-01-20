@@ -1,15 +1,16 @@
-" Plugins
-if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+let au_file=stdpath('data').'/site/autoload/plug.vim'
+if empty(glob(au_file))
+  silent exec "!curl -fLo ".au_file." --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
+unlet au_file
 
 call plug#begin(stdpath('config').'/plugged')
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
-Plug 'altercation/vim-colors-solarized'
+"Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
 Plug 'alvan/vim-closetag'
 
 call plug#end()
@@ -176,12 +177,6 @@ augroup CursorLine
     au WinLeave * setlocal nocursorline nocursorcolumn
 augroup END
 
-if has('win32') || has ('win64')
-  let $VIMHOME = $VIM."/vimfiles"
-else
-  let $VIMHOME = $HOME."/.vim"
-endif
-
 " Tab settings for individual filetypes
 "function! Tabglobal(numspaces)
 "  let &tabstop=a:numspaces
@@ -293,7 +288,7 @@ endfunction
 " "  :20  :  up to 20 lines of command-line history will be remembered
 " "  %    :  saves and restores the buffer list
 " "  n... :  where to save the viminfo files
-set viminfo='10,\"100,:20,%,n~/.viminfo'
+" set viminfo='10,\"100,:20,%,n~/.viminfo'
 
 function! ResCur()
   if line("'\"") <= line("$")
@@ -333,61 +328,19 @@ au FileType sh set foldmethod=syntax
 
 syntax enable
 
-"augroup javascript_folding
-"  au!
-"  au FileType javascript setlocal foldmethod=syntax
-"augroup END
-
 "Define some hotkeys for our super useful plugins!!
 nmap <silent> <F2> :CocCommand explorer<CR>
-nmap <silent> <F3> :TagbarToggle<CR>
-
-"Definition for the alternate plugin
-"|let g:alternateExtensions_cxx = "hxx"
-"|let g:alternateExtensions_hxx = "cxx"
-
-"enable rainbow parentheses all the time
-let g:rainbow_active = 1
-set enc=utf-8
-set fileencoding=utf-8
-set fileencodings=ucs-bom,utf8,prc
-set guifont=Monaco:h11
-set guifontwide=NSimsun:h12
-augroup XML
-    autocmd!
-    autocmd FileType xml let g:xml_syntax_folding=1
-    autocmd FileType xml setlocal foldmethod=syntax
-    autocmd FileType xml :syntax on
-    autocmd FileType xml :%foldopen!
-augroup END
-
-" latex-suite settings
-" REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
-filetype plugin on
 
 " IMPORTANT: win32 users will need to have 'shellslash' set so that latex
 " can be called correctly.
-set shellslash
+"set shellslash
 
 " OPTIONAL: This enables automatic indentation as you type.
 filetype indent on
-
-" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
-" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
-" The following changes the default filetype back to 'tex':
-let g:tex_flavor='latex'
-
-" gVim settings
-if has("gui_running")
-  set guifont=Dejavu\ Sans\ Mono\ Bold\ 12
-endif
-
-" Unfold all folders when reading a file
-au BufRead * normal zR
 
 " markdown configuration
 let g:markdown_enable_spell_checking=0
 
 syntax enable
 set background=dark
-colorscheme solarized
+colorscheme solarized8_high
