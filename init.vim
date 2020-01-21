@@ -9,9 +9,10 @@ call plug#begin(stdpath('config').'/plugged')
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
-"Plug 'altercation/vim-colors-solarized'
+Plug 'dhruvasagar/vim-open-url'
 Plug 'lifepillar/vim-solarized8'
 Plug 'alvan/vim-closetag'
+Plug 'ap/vim-css-color'
 
 call plug#end()
 
@@ -344,3 +345,4 @@ let g:markdown_enable_spell_checking=0
 syntax enable
 set background=dark
 colorscheme solarized8_high
+au BufRead * normal zR
