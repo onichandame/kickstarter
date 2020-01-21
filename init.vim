@@ -93,7 +93,8 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>r :!<Space>
+"nmap <leader>rn <Plug>(coc-rename)
 
 " Remap for format selected region
 xmap <leader>f  <Plug>(coc-format-selected)
@@ -330,6 +331,13 @@ au FileType sh set foldmethod=syntax
 syntax enable
 
 "Define some hotkeys for our super useful plugins!!
+if has('win32')
+  map A <F1>
+  map B <F2>
+  map C <F3>
+  map D <F4>
+  map E <F5>
+endif
 nmap <silent> <F2> :CocCommand explorer<CR>
 
 " IMPORTANT: win32 users will need to have 'shellslash' set so that latex
