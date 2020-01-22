@@ -27,6 +27,11 @@ let g:closetag_regions = {
 
 " coc nvim
 
+" Set a new leader
+let mapleader = ","
+
+nmap <leader>r :!<Space>
+
 " if hidden is not set, TextEdit might fail.
 set hidden
 
@@ -93,7 +98,6 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Remap for rename current word
-nmap <leader>r :!<Space>
 "nmap <leader>rn <Plug>(coc-rename)
 
 " Remap for format selected region
@@ -138,6 +142,7 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 
 " Add status line support, for integration with other plugin, checkout `:h coc-status`
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+set statusline=%{expand('%:.')}
 
 " Using CocList
 " Show all diagnostics
@@ -192,9 +197,6 @@ augroup END
 
 " Shortcut to kill highlighted search
 "map <F9> /Hello Sam. <CR>
-
-" Set a new leader
-let mapleader = ","
 
 " toggle cursorline & cursorcolumn
 nmap <Leader>c :set cursorline! cursorcolumn!<CR>
