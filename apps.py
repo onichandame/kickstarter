@@ -1,4 +1,4 @@
-from common.get_os import *
+from common.get_os import get_os, OS
 from common.get_argv import get_argv
 
 apps = []

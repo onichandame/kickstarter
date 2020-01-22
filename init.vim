@@ -27,6 +27,7 @@ let g:closetag_regions = {
 
 " coc nvim
 
+tnoremap <Esc> <C-\><C-n>
 " Set a new leader
 let mapleader = ","
 
@@ -334,7 +335,6 @@ syntax enable
 
 "Define some hotkeys for our super useful plugins!!
 if has('win32')
-  map A <F1>
   map B <F2>
   map C <F3>
   map D <F4>
