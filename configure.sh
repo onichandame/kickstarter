@@ -8,6 +8,6 @@ elif [ -n "$(command -v yum)" ]
 then
   PACK_MAN=yum
 fi
-sudo $PACK_MAN install python3 -y
+sudo $PACK_MAN install python3 python3-pip -y
 sudo python3 -m pip install distro
 sudo python3 configure.py $@
