@@ -11,11 +11,11 @@ Xiao Zhang
 # Usage
 Ubuntu18+ or CentOS 7+
 ```
-./configure.sh --desktop
+./configure.sh --desktop --init
 ```
 Windows 10
 ```
-.\configure.ps1 --desktop
+.\configure.ps1 --desktop --init
 ```
 
 # Mode
@@ -44,6 +44,14 @@ triggered by `--server`
 installs the following things:
 - python3
 - docker
+
+## Init
+
+triggered by `--init`
+
+installs the following things:
+- bashrc
+- init.vim(.vimrc equivalent for neovim)
 
 # Pre-requisite
 

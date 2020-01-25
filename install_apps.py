@@ -17,4 +17,4 @@ def install_apps():
     if queue.run(cmd, log=True):
         terminate('installation failed')
     if get_argv().desktop:
-        print('all done! now set alias for nvim and initiates it by following :h nvim-from-vim. the template configuration file init.vim is in this repo')
+        print('all done! Now install the latest version of neovim and the new system is ready to use!')
