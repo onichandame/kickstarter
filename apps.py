@@ -12,3 +12,6 @@ if get_argv().desktop:
         apps.append('g++')
     elif get_os() == OS.CENTOS:
         apps.append('gcc-c++')
+        apps.append('neovim')
+    elif get_os() == OS.WIN32:
+        apps.append('neovim')

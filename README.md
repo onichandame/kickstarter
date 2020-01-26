@@ -75,3 +75,10 @@ sudo permission as many packages need to be installed with root permission.
 
 note1: only the first specified mode has effect, the latter modes will be ignored.
 note2: `--bashrc` needs to be specified if $HOME/.bashrc needs to be overwritten
+
+# Roadmap
+next subversion: add neovim support for Ubuntu 18 and CentOS 7
+
+next minor version: add Qt for desktop, add node for both modes
+
+next major version: not planned yet
