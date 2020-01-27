@@ -12,7 +12,6 @@ Plug 'sheerun/vim-polyglot'
 Plug 'dhruvasagar/vim-open-url'
 Plug 'lifepillar/vim-solarized8'
 Plug 'alvan/vim-closetag'
-Plug 'ap/vim-css-color'
 
 call plug#end()
 
@@ -148,7 +147,7 @@ set statusline=%{GetStatus()}
 
 function! GetStatus()
   let status=coc#status().get(b:,'coc_current_function','')
-  if strlen(status) == 0
+  if status == 'TSC'
     let status=expand('%:.')
   endif
   return status
@@ -268,8 +267,6 @@ let g:pymode_options = 0
 "set nu
 "syntax on
 "set t_Co=256
-"colorscheme solarized
-"set background=dark
 
 " Fast editing of the .vimrc
 "map <leader>e :w<CR>:e! ~/.vimrc<CR>
@@ -340,8 +337,6 @@ au FileType sh let g:is_bash=1
 
 au FileType sh set foldmethod=syntax
 
-syntax enable
-
 "Define some hotkeys for our super useful plugins!!
 if has('win32')
   map B <F2>
@@ -361,7 +356,10 @@ filetype indent on
 " markdown configuration
 let g:markdown_enable_spell_checking=0
 
-syntax enable
-set background=dark
-colorscheme solarized8_high
+" unfold opening
 au BufRead * normal zR
+
+syntax enable
+set termguicolors
+set background=dark
+colorscheme solarized8
