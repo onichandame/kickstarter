@@ -12,6 +12,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'dhruvasagar/vim-open-url'
 Plug 'lifepillar/vim-solarized8'
 Plug 'alvan/vim-closetag'
+Plug 'skywind3000/asyncrun.vim'
 
 call plug#end()
 
@@ -30,7 +31,11 @@ tnoremap <Esc> <C-\><C-n>
 " Set a new leader
 let mapleader = ","
 
-nmap <leader>r :!<Space>
+let g:asyncrun_open = 8
+nmap <leader>r :AsyncRun<Space>
+nmap <leader>s :AsyncStop<CR>
+nmap <leader>o :copen<Space>
+nmap <leader>qq :ccl<Space>
 
 " if hidden is not set, TextEdit might fail.
 set hidden
