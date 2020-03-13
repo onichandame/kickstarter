@@ -9,8 +9,10 @@ if ( -NOT (Get-Command scoop -errorAction SilentlyContinue)) {
   Invoke-WebRequest -useb get.scoop.sh | Invoke-Expression | Out-Null
 }
 
-#install python
-scoop install python@3.6.1 | Out-Null
+#install deps
+Get-Content .\prequirements.txt | ForEach-Object {
+  scoop install $_ | Out-Null
+}
 
-#install packages according to arguments
+#pass the rest of the work to python scipt
 invoke-expression "python configure.py $args"

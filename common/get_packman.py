@@ -1,9 +1,26 @@
-from .get_os import get_os, OS
+from shutil import which
 
-def get_packman():
-    if get_os() == OS.WIN32:
-        return 'scoop.cmd'
-    elif get_os() == OS.UBUNTU:
-        return 'apt'
-    elif get_os() == OS.CENTOS:
-        return 'yum'
+class GetPackman():
+
+    def __init__(self):
+        self.candidates = [
+            # packman of the future
+            'dnf',
+            'snap',
+
+            # legacy packman
+            'yum',
+            'apt'
+        ]
+
+    def __call__(self):
+        _packman_ = self.find_packman()
+        return _packman_
+
+    def find_packman(self):
+        for candidate in self.candidates:
+            if(which(candidate)):
+                return candidate
+        return ''
+
+get_packman = GetPackman()

@@ -1,3 +1,0 @@
-[submodule "jobqueue"]
-	path = jobqueue
-	url = https://github.com/onichandame/jobqueue

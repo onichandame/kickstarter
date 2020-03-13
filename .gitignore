@@ -1,3 +1,4 @@
 hardcopy.*
 __pycache__
 *.sw*
+.env

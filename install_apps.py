@@ -1,20 +1,8 @@
 import subprocess
 
-from apps import apps
-from jobqueue.jobqueue import JobQueue
-from common.get_packman import get_packman
-from common.get_os import get_os, OS
-from common.terminate import terminate
-from common.get_argv import get_argv
+from .prebuild import prebuild
+from .build import build
 
 def install_apps():
-    queue = JobQueue()
-    cmd = []
-    if get_os() == OS.WIN32:
-        cmd=[get_packman(), 'install'] + apps
-    else:
-        cmd=[get_packman(), 'install', '-y'] + apps
-    if queue.run(cmd, log=True):
-        terminate('installation failed')
-    if get_argv().desktop:
-        print('all done! Now install the latest version of neovim and the new system is ready to use!')
+    prebuild()
+    build()
