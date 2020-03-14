@@ -1,8 +1,8 @@
 from concurrent.futures import ThreadPoolExecutor
 from os import system
 
-from common.get_os import get_os, OS
-from common.get_packman import get_packman
+from utils.get_os import get_os, OS
+from utils.get_packman import get_packman
 
 class GetApps():
     def __call__(self):

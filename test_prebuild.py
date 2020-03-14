@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from prebuild import get_apps
-from common.get_os import OS
+from utils.get_os import OS
 
 class TestGetApps(TestCase):
 
@@ -23,5 +23,3 @@ class TestGetApps(TestCase):
         with patch('prebuild.get_os', return_value=OS.WIN32):
             self.assertNotIn('gcc-c++', get_apps())
             self.assertNotIn('g++', get_apps())
-
-class TestPrebuild(TestCase):

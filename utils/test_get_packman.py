@@ -19,20 +19,20 @@ class TestGetPackman(TestCase):
 
     def test_snap(self):
         target = 'snap'
-        with patch('common.get_packman.which', new=mock_packman(target)):
+        with patch(__package__+'.get_packman.which', new=mock_packman(target)):
             self.assertIn(target, subject())
 
     def test_dnf(self):
         target = 'dnf'
-        with patch('common.get_packman.which', new=mock_packman(target)):
+        with patch(__package__+'.get_packman.which', new=mock_packman(target)):
             self.assertIn(target, subject())
 
     def test_apt(self):
         target = 'apt'
-        with patch('common.get_packman.which', new=mock_packman(target)):
+        with patch(__package__+'.get_packman.which', new=mock_packman(target)):
             self.assertIn(target, subject())
 
     def test_yum(self):
         target = 'yum'
-        with patch('common.get_packman.which', new=mock_packman(target)):
+        with patch(__package__+'.get_packman.which', new=mock_packman(target)):
             self.assertIn(target, subject())

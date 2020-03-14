@@ -13,21 +13,31 @@ Xiao Zhang
 Ubuntu18+ or CentOS 7+
 
 ```bash
-./configure.sh --desktop --init
+./configure.sh --desktop --bashrc --vimrc
 ```
 
 Windows 10
 
 ```bash
-.\configure.ps1 --desktop --init
+.\configure.ps1 --desktop --bashrc --vimrc
 ```
 
 # Mode
 
-There are 2 pre-set modes defining different sets of tools to be installed.
+There are 4 pre-set modes defining different sets of tools to be installed.
 
-- desktop: environment for everyday use and development
-- server: environment for production
+- required:
+  - desktop: environment for workstation
+  - server: environment for production server
+- optional:
+  - bashrc: overwrites $HOME/.bashrc
+  - vimrc: overwrites $HOME/.config/nvim/init.vim
+
+# Common
+
+Installed on both modes
+
+- python3
 
 ## Desktop
 
@@ -39,18 +49,11 @@ installs the following things if not found:
 - make
 - cmake
 - g++
-- python3
 - neovim(with all plugins)
-- docker
 
 ## Server
 
 triggered by `--server`
-
-installs the following things:
-
-- python3
-- docker
 
 ## Init
 
@@ -70,14 +73,14 @@ installs the following things:
 
 ## Linux
 
-bash 4+, apt/yum to install packages through package manager
+bash 4+, CentOS or Ubuntu or the like.
 
 sudo permission as many packages need to be installed with root permission.
 
 # Roadmap
 
-next subversion: add neovim support for Ubuntu 18 and CentOS 7
+1. add neovim support for Ubuntu 18 and CentOS 7
 
-next minor version: add Qt for desktop, add node for both modes
+2. add Qt for desktop, add node for both modes
 
-next major version: not planned yet
+3. add kubectl/kubeadm for server and minikube for desktop

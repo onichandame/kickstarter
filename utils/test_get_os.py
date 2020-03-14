@@ -9,21 +9,21 @@ class TestGetOS(TestCase):
         self.assertIn(subject(), OS)
 
     def test_win(self):
-        with patch('common.get_os.platform', 'win32'):
+        with patch(__package__+'.get_os.platform', 'win32'):
             self.assertEqual(subject(), OS.WIN32)
 
     def test_ubuntu(self):
-        with patch('common.get_os.platform', 'linux'), patch('common.get_os.linux_distribution', return_value=['ubuntu']):
+        with patch(__package__+'.get_os.platform', 'linux'), patch(__package__+'.get_os.linux_distribution', return_value=['ubuntu']):
             self.assertEqual(subject(), OS.UBUNTU)
 
     def test_centos(self):
-        with patch('common.get_os.platform', 'linux'), patch('common.get_os.linux_distribution', return_value=['centos']):
+        with patch(__package__+'.get_os.platform', 'linux'), patch(__package__+'.get_os.linux_distribution', return_value=['centos']):
             self.assertEqual(subject(), OS.CENTOS)
 
     def test_other_os(self):
-        with patch('common.get_os.platform', '!@#$'):
+        with patch(__package__+'.get_os.platform', '!@#$'):
             self.assertEqual(subject(), OS.UNKNOWN)
 
     def test_other_linux(self):
-        with patch('common.get_os.platform', 'linux'), patch('common.get_os.linux_distribution', return_value=['!@#$#%']):
+        with patch(__package__+'.get_os.platform', 'linux'), patch(__package__+'.get_os.linux_distribution', return_value=['!@#$#%']):
             self.assertEqual(subject(), OS.UNKNOWN)
