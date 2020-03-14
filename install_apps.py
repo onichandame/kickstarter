@@ -1,7 +1,7 @@
 import subprocess
 
-from .prebuild import prebuild
-from .build import build
+from utils.prebuild import prebuild
+from utils.build import build
 
 def install_apps():
     prebuild()

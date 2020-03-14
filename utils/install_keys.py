@@ -1,5 +1,7 @@
 from requests import get
-import os, stat
+from stat import S_IRWXU
+from os import path, chmod, mkdir
+from os.path import exists, join
 from prompter import prompt, yesno
 
 from .get_os import get_os, OS
@@ -33,12 +35,12 @@ class KeyUrl():
 def install_keys():
     if not yesno('import SSH keys from Github?', default='yes'):
         return False
-    key_dir = os.path.join(get_home(), '.ssh')
-    key_file = os.path.join(key_dir, 'authorized_keys')
+    key_dir = join(get_home(), '.ssh')
+    key_file = join(key_dir, 'authorized_keys')
 
-    if not os.path.exists(key_dir):
-        os.mkdir(key_dir)
-    if not os.path.exists(key_file):
+    if not exists(key_dir):
+        mkdir(key_dir)
+    if not exists(key_file):
         with open(key_file, 'w') as f:
             f.write('')
     cur_keys = []
@@ -47,14 +49,16 @@ def install_keys():
 
     new_keys = []
     url = KeyUrl()
-    for key in get(url()).json():
+    got_keys = get(url()).json()
+    for key in got_keys:
         if key['key'] not in cur_keys:
             new_keys.append(key['key'])
 
-    with open(key_file, 'a') as f:
-        for key in new_keys:
-            f.write(key+'\r\n')
+    if new_keys:
+        with open(key_file, 'a') as f:
+            for key in new_keys:
+                f.write(key+'\n')
 
-    os.chmod(key_file, stat.S_IRWXU)
-    os.chmod(key_dir, stat.S_IRWXU)
+    chmod(key_file, S_IRWXU)
+    chmod(key_dir, S_IRWXU)
     return True
