@@ -2,25 +2,17 @@ from os import system
 
 from .get_os import get_os, OS
 from .get_packman import get_packman
-from .get_argv import get_argv
+from .apps import apps, Type
 
-class GetApps():
-    def __call__(self):
-        _apps = [
-            'make',
-            'cmake',
-            'gcc',
-            'docker',
-        ]
-        if get_argv().desktop:
-            _apps.append('nodejs')
-        if get_os() == OS.CENTOS:
-            _apps.append('gcc-c++')
-        elif get_os() == OS.UBUNTU:
-            _apps.append('g++')
-        return _apps
-
-get_apps = GetApps()
+def get_apps():
+    _apps = []
+    for name, app in apps().items():
+        if app['type'] == Type.PACKMAN:
+            _apps.append(name)
+        if app['type'] == Type.SOURCE and 'dependency' in app:
+            for dep in app['dependency']:
+                _apps.append(dep['name'])
+    return list(dict.fromkeys(_apps))
 
 def prebuild():
     apps = []

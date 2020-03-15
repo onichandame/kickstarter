@@ -1,4 +1,5 @@
 from .get_argv import get_argv
+from .get_os import get_os, OS
 
 from enum import Enum
 
@@ -7,15 +8,13 @@ class Type(Enum):
     PACKMAN =1
 
 def apps():
-    _apps = [
-        {
-            'name': 'python3',
+    _apps = {
+        'python3': {
             'type': Type.PACKMAN
         }
-    ]
+    }
     if get_argv().desktop:
-        _apps.append({
-            'name': 'neovim',
+        _apps['neovim'] = {
             'type': Type.SOURCE,
             'repo': 'https://github.com/neovim/neovim.git',
             'tag': 'v0.4.3',
@@ -68,15 +67,18 @@ def apps():
                     'name': 'python3',
                     'type': Type.PACKMAN
                 }
-            ]
-        })
+            ],
+            'build': 'make CMAKE_BUILD_TYPE=Release',
+            'postbuild': 'sudo make install'
+        }
         if get_os() == OS.CENTOS:
-            _apps[0]['dependency'].append({
+            _apps['neovim']['dependency'].append({
                 'name': 'gcc-c++',
                 'type': Type.PACKMAN
             })
         elif get_os() == OS.UBUNTU:
-            _apps[0]['dependency'].append({
+            _apps['neovim']['dependency'].append({
                 'name': 'g++',
                 'type': Type.PACKMAN
             })
+    return _apps

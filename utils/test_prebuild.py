@@ -1,41 +1,91 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-from .prebuild import get_apps as subject1, prebuild as subject2
 from .get_os import OS
+from .apps import Type
+
+from .prebuild import get_apps as subject1, prebuild as subject2
 
 class TestGetApps(TestCase):
 
-    def test_run(self):
-        self.assertTrue(type(subject1()) == list)
+    def test_return_type(self):
+        with patch(__package__+'.apps.get_argv') as mock_argv:
+            mock_argv.return_value.desktop = True
+            apps = subject1()
+            self.assertTrue(type(apps) == list)
+            for app in apps:
+                self.assertEqual(type(app), str)
 
-    def test_common(self):
-        with patch(__package__+'.prebuild.get_os', return_value=OS.UBUNTU):
-            self.assertIn('make', subject1())
-            self.assertIn('cmake', subject1())
-            self.assertIn('gcc', subject1())
-            self.assertIn('docker', subject1())
-        with patch(__package__+'.prebuild.get_os', return_value=OS.CENTOS):
-            self.assertIn('make', subject1())
-            self.assertIn('cmake', subject1())
-            self.assertIn('gcc', subject1())
-            self.assertIn('docker', subject1())
-        with patch(__package__+'.prebuild.get_os', return_value=OS.WIN32):
-            self.assertIn('make', subject1())
-            self.assertIn('cmake', subject1())
-            self.assertIn('gcc', subject1())
-            self.assertIn('docker', subject1())
+    def test_get_packman(self):
+        with patch(__package__+'.prebuild.apps') as mock_apps:
+            mock_apps.return_value = {
+                'app1': {
+                    'type': Type.PACKMAN
+                },
+                'app2': {
+                    'type': Type.PACKMAN
+                },
+                'app3': {
+                    'type': Type.SOURCE
+                }
+            }
+            apps = subject1()
+            self.assertEqual(len(apps), 2)
+            self.assertIn('app1', apps)
+            self.assertIn('app2', apps)
+            self.assertNotIn('app3', apps)
 
-    def test_gxx(self):
-        with patch(__package__+'.prebuild.get_os', return_value=OS.UBUNTU):
-            self.assertIn('g++', subject1())
-            self.assertNotIn('gcc-c++', subject1())
-        with patch(__package__+'.prebuild.get_os', return_value=OS.CENTOS):
-            self.assertIn('gcc-c++', subject1())
-            self.assertNotIn('g++', subject1())
-        with patch(__package__+'.prebuild.get_os', return_value=OS.WIN32):
-            self.assertNotIn('gcc-c++', subject1())
-            self.assertNotIn('g++', subject1())
+    def test_get_deps(self):
+        with patch(__package__+'.prebuild.apps') as mock_apps:
+            mock_apps.return_value = {
+                'app1': {
+                    'type': Type.SOURCE,
+                    'dependency': [
+                        {
+                            'name': 'app1dep1'
+                        },
+                        {
+                            'name': 'app1dep2'
+                        }
+                    ]
+                },
+                'app2': {
+                    'type': Type.SOURCE,
+                    'dependency': [
+                        {
+                            'name': 'app2dep1'
+                        },
+                        {
+                            'name': 'app2dep2'
+                        }
+                    ]
+                }
+            }
+            apps = subject1()
+            self.assertEqual(len(apps), 4)
+            self.assertIn('app1dep1', apps)
+            self.assertIn('app1dep2', apps)
+            self.assertIn('app2dep1', apps)
+            self.assertIn('app2dep2', apps)
+
+    def test_remove_duplicate(self):
+        with patch(__package__+'.prebuild.apps') as mock_apps:
+            mock_apps.return_value = {
+                'app1': {
+                    'type': Type.PACKMAN
+                },
+                'app2': {
+                    'type': Type.SOURCE,
+                    'dependency': [
+                        {
+                            'name': 'app1'
+                        }
+                    ]
+                }
+            }
+            apps = subject1()
+            self.assertEqual(len(apps), 1)
+            self.assertIn('app1', apps)
 
 class TestPrebuild(TestCase):
 
