@@ -16,12 +16,6 @@ Ubuntu18+ or CentOS 7+
 ./configure.sh --desktop --bashrc --vimrc
 ```
 
-Windows 10
-
-```bash
-.\configure.ps1 --desktop --bashrc --vimrc
-```
-
 # Mode
 
 There are 4 pre-set modes defining different sets of tools to be installed.
@@ -65,11 +59,6 @@ installs the following things:
 - init.vim(.vimrc equivalent for neovim)
 
 # Pre-requisite
-
-## Windows
-
-- powershell 5+ with core modules
-- .Net 4.5+
 
 ## Linux
 

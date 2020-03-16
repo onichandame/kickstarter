@@ -10,7 +10,8 @@ class GetPackman():
 
             # legacy packman
             'yum',
-            'apt'
+            'apt',
+            'scoop.cmd'
         ]
 
     def __call__(self):

@@ -15,4 +15,7 @@ Get-Content .\prequirements.txt | ForEach-Object {
 }
 
 #pass the rest of the work to python scipt
+python3 -m venv .env
+.\.env\Scripts\activate
+pip install -r .\requirements.txt
 invoke-expression "python configure.py $args"
