@@ -69,7 +69,7 @@ def apps():
                 }
             ],
             'build': 'make CMAKE_BUILD_TYPE=Release',
-            'postbuild': 'sudo make install'
+            'postbuild': 'make install'
         }
         if get_os() == OS.CENTOS:
             _apps['neovim']['dependency'].append({

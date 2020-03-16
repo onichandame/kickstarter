@@ -2,10 +2,11 @@ from rstr import rstr
 from string import digits, ascii_lowercase, ascii_uppercase
 from os import mkdir
 from os.path import join, dirname, exists
-from subprocess import Popen, DEVNULL
+from subprocess import check_call, DEVNULL
 from shutil import rmtree
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from git import Repo
+from git.remote import RemoteProgress
 from tqdm import tqdm
 from enum import Enum
 
@@ -45,14 +46,13 @@ class TempFolder():
 
 temp_folder_gen = TempFolder()
 
-class BuildJob(tqdm):
+class BuildJob():
 
     def __init__(self, name, config):
         self.stages = {
             'download': {
                 'desc': 'downloading {}'.format(name)
-            },
-            'configure': {
+            }, 'configure': {
                 'desc': 'configuring {}'.format(name)
             },
             'build': {
@@ -79,58 +79,78 @@ class BuildJob(tqdm):
         self.postbuild()
         self.progressbar.close()
 
+    def reset(self, desc, total):
+        self.progressbar.set_description(desc)
+        self.progressbar.total = total
+        self.progressbar.n = 0
+
     def download(self):
-        def update_progress(self, code, cur, tot, message):
-            self.progressbar.total = tot
-            self.progressbar.n = cur
-            self.progressbar.update(0)
-        self.progressbar.desc = self.stages['download']['desc']
-        repo = Repo.clone_from(self.config['repo'], self.src_dir, progress=update_progress, multi_options=[
+        this = self
+        class Progress(RemoteProgress):
+
+            def update(self, code, cur, tot, msg):
+                this.progressbar.total = tot
+                this.progressbar.n = cur
+                this.progressbar.update(0)
+
+        self.reset(self.stages['download']['desc'], 1)
+        repo = Repo.clone_from(self.config['repo'], self.src_dir, progress=Progress(), multi_options=[
             '-b {}'.format(self.config['tag']),
             '--depth=1'
         ])
 
     def configure(self):
-        self.progressbar.desc = self.stages['configure']['desc']
-        self.progressbar.total = 1
-        self.progressbar.n = 0
+        self.reset(self.stages['configure']['desc'], 1)
         if 'configure' in self.config:
-            if Popen(config['configure'].split(), stdout=DEVNULL, stderr=DEVNULL, cwd=self.src_dir).wait():
+            try:
+                check_call(self.config['configure'].split(), stdout=DEVNULL, stderr=DEVNULL, cwd=self.src_dir)
+            except Exception:
                 raise Exception('{} failed configuring'.format(self.name))
         self.progressbar.n = 1
 
     def build(self):
-        self.progressbar.desc = self.stages['build']['desc']
-        self.progressbar.total = 1
-        self.progressbar.n = 0
+        self.reset(self.stages['build']['desc'], 1)
         if 'build' in self.config:
-            if Popen(config['build'].split(), stdout=DEVNULL, stderr=DEVNULL, cwd=self.src_dir).wait():
+            try:
+                check_call(self.config['build'].split(), stdout=DEVNULL, stderr=DEVNULL, cwd=self.src_dir)
+            except Exception:
                 raise Exception('{} failed building'.format(self.name))
         self.progressbar.n = 1
 
     def postbuild(self):
-        self.progressbar.desc = self.stages['postbuild']['desc']
-        self.progressbar.total = 1
-        self.progressbar.n = 0
+        self.reset(self.stages['postbuild']['desc'], 1)
         if 'postbuild' in self.config:
-            if Popen(config['postbuild'].split(), stdout=DEVNULL, stderr=DEVNULL, cwd=self.src_dir).wait():
+            try:
+                check_call(self.config['postbuild'].split(), stdout=DEVNULL, stderr=DEVNULL, cwd=self.src_dir)
+            except Exception:
                 raise Exception('{} failed post-build script'.format(self.name))
         self.progressbar.n = 1
 
-def build():
+def build(reset_function=False, runner_function=False):
     def get_itrs():
         names = []
         configs = []
         for name, config in apps().items():
-            names.append(name)
-            configs.append(config)
+            if config['type'] == Type.SOURCE:
+                names.append(name)
+                configs.append(config)
         return [names, configs]
 
-    temp_folder_gen.reset()
-    with ThreadPoolExecutor() as executor:
-        jobs = executor.map(BuildJob, *get_itrs())
-        for job in jobs:
-            try:
-                job.result()
-            except Exception as e:
-                terminate('build job failed. see above for details')
+    def reset():
+        temp_folder_gen.reset()
+
+    def runner():
+        with ThreadPoolExecutor() as executor:
+            jobs = executor.map(BuildJob, *get_itrs())
+            for job in jobs:
+                try:
+                    job.result()
+                except Exception as e:
+                    terminate('build job failed. see above for details')
+
+    if not reset_function:
+        reset_function = reset
+    if not runner_function:
+        runner_function = runner
+    reset_function()
+    runner_function()

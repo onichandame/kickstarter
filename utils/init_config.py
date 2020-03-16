@@ -1,5 +1,6 @@
-from os import mkdir
+from os import makedirs as mkdir, chmod
 from os.path import join, dirname, exists
+from stat import S_IRWXU, S_IRWXG, S_IRWXO
 from shutil import copyfile
 
 from .get_os import get_os, OS
@@ -10,6 +11,7 @@ def init_bashrc():
     if get_os() != OS.WIN32 and get_argv().bashrc:
         bashrc = join(get_home(), '.bashrc')
         copyfile(join(dirname(__file__), 'bashrc'), bashrc)
+        chmod(bashrc, S_IRWXU | S_IRWXG | S_IRWXO)
         return True
     return False
 
@@ -24,7 +26,8 @@ def init_vimrc():
         if not exists(vimrc_dir):
             mkdir(vimrc_dir)
         vimrc = join(vimrc_dir, 'init.vim')
-        copyfile(join(dirname(__file__), 'init.vim'), vimrc)
+        copyfile(join(dirname(__file__), 'vimrc'), vimrc)
+        chmod(vimrc, S_IRWXU | S_IRWXG | S_IRWXO)
         return True
     return False
 

@@ -21,5 +21,4 @@ done < "$REQUIREMENTS"
 python3 -m venv .env
 source .env/bin/activate
 pip install -r requirements.txt
-exit 1
-sudo python3 configure.py $@
+python configure.py $@

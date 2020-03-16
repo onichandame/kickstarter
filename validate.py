@@ -10,5 +10,5 @@ def check_args():
     get_argv()
 
 def check_os():
-    if check_os() == OS.UNKNOWN:
+    if get_os() == OS.UNKNOWN:
         terminate('currently only windows, ubuntu and centos is supported')
