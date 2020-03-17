@@ -111,9 +111,18 @@ class BuildJob():
     def build(self):
         self.reset(self.stages['build']['desc'], 1)
         if 'build' in self.config:
-            try:
-                check_call(self.config['build'].split(), stdout=DEVNULL, stderr=DEVNULL, cwd=self.src_dir)
-            except Exception:
+            max_retries = 5
+            retry_count = 0
+            success = False
+            while True and retry_count < max_retries:
+                try:
+                    # check_call(self.config['build'].split(), stdout=DEVNULL, stderr=DEVNULL, cwd=self.src_dir)
+                    check_call(self.config['build'].split(), cwd=self.src_dir)
+                    success = True
+                    break
+                except Exception:
+                    retry_count += 1
+            if not success:
                 raise Exception('{} failed building'.format(self.name))
         self.progressbar.n = 1
 

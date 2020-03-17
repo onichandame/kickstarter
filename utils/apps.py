@@ -68,7 +68,8 @@ def apps():
                     'type': Type.PACKMAN
                 }
             ],
-            'build': 'make CMAKE_BUILD_TYPE=Release',
+            # 'build': 'make CMAKE_BUILD_TYPE=Release', # failed downloading luarocks. switch back when fixed
+            'build': 'make',
             'postbuild': 'make install'
         }
         if get_os() == OS.CENTOS:

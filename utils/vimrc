@@ -36,6 +36,8 @@ nmap <leader>r :AsyncRun<Space>
 nmap <leader>s :AsyncStop<CR>
 nmap <leader>o :copen<Space>
 nmap <leader>qq :ccl<Space>
+nmap <silent> w <Plug>(coc-ci-w)
+nmap <silent> b <Plug>(coc-ci-b)
 
 " if hidden is not set, TextEdit might fail.
 set hidden
