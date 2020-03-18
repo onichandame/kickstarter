@@ -2,7 +2,7 @@ from rstr import rstr
 from string import digits, ascii_lowercase, ascii_uppercase
 from os import mkdir
 from os.path import join, dirname, exists
-from subprocess import check_call, DEVNULL
+from subprocess import check_call, DEVNULL, CalledProcessError
 from shutil import rmtree
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from git import Repo
@@ -104,25 +104,18 @@ class BuildJob():
         if 'configure' in self.config:
             try:
                 check_call(self.config['configure'].split(), stdout=DEVNULL, stderr=DEVNULL, cwd=self.src_dir)
-            except Exception:
+            except CalledProcessError as e:
+                tqdm.write(e)
                 raise Exception('{} failed configuring'.format(self.name))
         self.progressbar.n = 1
 
     def build(self):
         self.reset(self.stages['build']['desc'], 1)
         if 'build' in self.config:
-            max_retries = 5
-            retry_count = 0
-            success = False
-            while True and retry_count < max_retries:
-                try:
-                    # check_call(self.config['build'].split(), stdout=DEVNULL, stderr=DEVNULL, cwd=self.src_dir)
-                    check_call(self.config['build'].split(), cwd=self.src_dir)
-                    success = True
-                    break
-                except Exception:
-                    retry_count += 1
-            if not success:
+            try:
+                check_call(self.config['build'].split(), stdout=DEVNULL, stderr=DEVNULL, cwd=self.src_dir)
+            except CalledProcessError as e:
+                tqdm.write(e)
                 raise Exception('{} failed building'.format(self.name))
         self.progressbar.n = 1
 
@@ -131,31 +124,32 @@ class BuildJob():
         if 'postbuild' in self.config:
             try:
                 check_call(self.config['postbuild'].split(), stdout=DEVNULL, stderr=DEVNULL, cwd=self.src_dir)
-            except Exception:
+            except CalledProcessError as e:
+                tqdm.write(e)
                 raise Exception('{} failed post-build script'.format(self.name))
         self.progressbar.n = 1
 
 def build(reset_function=False, runner_function=False):
-    def get_itrs():
-        names = []
-        configs = []
+    def get_args():
+        result = []
         for name, config in apps().items():
             if config['type'] == Type.SOURCE:
-                names.append(name)
-                configs.append(config)
-        return [names, configs]
+                result.append([name, config])
+        return result
 
     def reset():
         temp_folder_gen.reset()
 
     def runner():
         with ThreadPoolExecutor() as executor:
-            jobs = executor.map(BuildJob, *get_itrs())
-            for job in jobs:
+            jobs = [executor.submit(BuildJob, *arg) for arg in get_args()]
+            for job in as_completed(jobs):
                 try:
-                    job.result()
+                    build_job = job.result()
                 except Exception as e:
+                    print(e)
                     terminate('build job failed. see above for details')
+        print('all build jobs done!')
 
     if not reset_function:
         reset_function = reset

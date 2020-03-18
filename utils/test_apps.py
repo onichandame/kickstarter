@@ -16,7 +16,7 @@ class TestApps(TestCase):
                 if 'dependency' in app:
                     for dep in app['dependency']:
                         self.assertIn('name', dep)
-                if app['type'] == Type.SOURCE or app['type'] == Type.PACKMAN_SOURCE:
+                if app['type'] == Type.SOURCE:
                     self.assertIn('build', app)
         with patch(__package__+'.apps.get_argv') as mock_argv:
             mock_argv.return_value.desktop = False
@@ -28,5 +28,5 @@ class TestApps(TestCase):
                 if 'dependency' in app:
                     for dep in app['dependency']:
                         self.assertIn('name', dep)
-                if app['type'] == Type.SOURCE or app['type'] == Type.PACKMAN_SOURCE:
+                if app['type'] == Type.SOURCE:
                     self.assertIn('build', app)

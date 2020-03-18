@@ -159,12 +159,8 @@ class TestBuild(TestCase):
                 'type': Type.SOURCE
             }
         }
-        class MockJob():
 
-            def result():
-                raise Exception()
-
-        with patch(__package__+'.build.ThreadPoolExecutor.map') as mock_map, patch(__package__+'.build.apps') as mock_apps, open(devnull, 'w') as mock_devnull, patch('sys.stdout', mock_devnull):
+        with open(devnull, 'w') as mock_devnull, patch('sys.stdout', mock_devnull), patch('sys.stderr', mock_devnull), patch(__package__+'.build.ThreadPoolExecutor.submit') as mock_submit, patch(__package__+'.build.apps') as mock_apps, patch(__package__+'.build.as_completed', return_value=[]):
 
             mock_apps.return_value = {
                 randomstring(): {
@@ -172,12 +168,8 @@ class TestBuild(TestCase):
                 }
             }
             subject3(reset_function=lambda: '')
-            mock_map.assert_called_with(subject2, [], [])
+            mock_submit.assert_not_called()
 
             mock_apps.return_value = apps
             subject3(reset_function=lambda: '')
-            mock_map.assert_called_with(subject2, list(apps.keys()), list(apps.values()))
-
-            mock_map.return_value = [ MockJob() ]
-            with self.assertRaises(SystemExit):
-                subject3(reset_function=lambda: '')
+            mock_submit.assert_called_with(subject2, list(apps.keys())[0], list(apps.values())[0])

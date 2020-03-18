@@ -13,17 +13,17 @@ Xiao Zhang
 Ubuntu18+ or CentOS 7+
 
 ```bash
-./configure.sh --desktop --bashrc --vimrc
+sudo ./configure.sh --desktop --bashrc --vimrc
 ```
 
 # Mode
 
 There are 4 pre-set modes defining different sets of tools to be installed.
 
-- required:
+- required(must specify one of the two options):
   - desktop: environment for workstation
   - server: environment for production server
-- optional:
+- optional(any number of the options can be specified):
   - bashrc: overwrites $HOME/.bashrc
   - vimrc: overwrites $HOME/.config/nvim/init.vim
 
@@ -68,8 +68,8 @@ sudo permission as many packages need to be installed with root permission.
 
 # Roadmap
 
-1. add neovim support for Ubuntu 18 and CentOS 7
-
-2. add Qt for desktop, add node for both modes
-
-3. add kubectl/kubeadm for server and minikube for desktop
+1. add docker for desktop
+2. add dummy mode for updating bashrc and vimrc
+3. add kubernetes for server/desktop
+4. pass github username as an argument
+5. specify whether to install ssh keys by arguments
