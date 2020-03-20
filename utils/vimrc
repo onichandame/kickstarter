@@ -13,6 +13,7 @@ Plug 'dhruvasagar/vim-open-url'
 Plug 'lifepillar/vim-solarized8'
 Plug 'alvan/vim-closetag'
 Plug 'skywind3000/asyncrun.vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
 call plug#end()
 
@@ -238,7 +239,6 @@ vmap <Space> I<Space>
 map <leader>tn :tabnext<CR>
 map <leader>tp :tabprevious<CR>
 map <leader>to :tabnew<Space>
-map a whi
 
 " Cunning pal to paste consecutive numbers in column
 map + yljphx<Esc>h<C-A>
