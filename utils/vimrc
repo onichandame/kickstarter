@@ -229,6 +229,9 @@ map <BS> i<BS>
 imap <C-v> <Esc>l<C-v>
 map t y$
 
+" cursor move shortcuts
+nnoremap a ea
+
 " Window & tab Shortcuts
 map <C-h> <C-w>h
 map <C-j> <C-w>j
