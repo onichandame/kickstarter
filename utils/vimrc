@@ -231,6 +231,7 @@ map t y$
 
 " cursor move shortcuts
 nnoremap a ea
+nnoremap e e
 
 " Window & tab Shortcuts
 map <C-h> <C-w>h
