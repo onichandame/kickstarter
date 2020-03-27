@@ -1,2 +1,4 @@
 screenrc:
   strip screen. on the front of TERM
+auto install Vim-Plug
+add generic support of other linux distro. e.g. 'linux' 'debian' etc
