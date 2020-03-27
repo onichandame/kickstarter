@@ -40,33 +40,25 @@ class TestGetApps(TestCase):
             mock_apps.return_value = {
                 'app1': {
                     'type': Type.SOURCE,
-                    'dependency': [
-                        {
-                            'name': 'app1dep1'
-                        },
-                        {
-                            'name': 'app1dep2'
-                        }
-                    ]
+                    'dependency': {
+                        'app3': {},
+                        'app4': {}
+                    }
                 },
                 'app2': {
                     'type': Type.SOURCE,
-                    'dependency': [
-                        {
-                            'name': 'app2dep1'
-                        },
-                        {
-                            'name': 'app2dep2'
-                        }
-                    ]
+                    'dependency': {
+                        'app1': {},
+                        'app2': {}
+                    }
                 }
             }
             apps = subject1()
             self.assertEqual(len(apps), 4)
-            self.assertIn('app1dep1', apps)
-            self.assertIn('app1dep2', apps)
-            self.assertIn('app2dep1', apps)
-            self.assertIn('app2dep2', apps)
+            self.assertIn('app1', apps)
+            self.assertIn('app2', apps)
+            self.assertIn('app3', apps)
+            self.assertIn('app4', apps)
 
     def test_remove_duplicate(self):
         with patch(__package__+'.prebuild.apps') as mock_apps:
@@ -76,11 +68,9 @@ class TestGetApps(TestCase):
                 },
                 'app2': {
                     'type': Type.SOURCE,
-                    'dependency': [
-                        {
-                            'name': 'app1'
-                        }
-                    ]
+                    'dependency': {
+                        'app1': {}
+                    }
                 }
             }
             apps = subject1()
@@ -90,16 +80,13 @@ class TestGetApps(TestCase):
 class TestPrebuild(TestCase):
 
     def test_call_system(self):
-        with patch(__package__+'.prebuild.get_packman', return_value='qwegfdbv'), patch(__package__+'.prebuild.get_apps', return_value=[]), patch(__package__+'.prebuild.system') as mock_system, patch(__package__+'.prebuild.get_os', return_value=OS.CENTOS):
+        with patch(__package__+'.prebuild.get_packman', return_value='qwegfdbv'), patch(__package__+'.prebuild.get_apps', return_value=[]), patch(__package__+'.prebuild.system') as mock_system, patch(__package__+'.prebuild.get_os', return_value=OS.LINUX):
             subject2()
             mock_system.assert_called_once()
 
     def test_call_with_packman(self):
         packman = 'qwergfdsdewergff'
-        with patch(__package__+'.prebuild.get_packman', return_value=packman), patch(__package__+'.prebuild.get_apps', return_value=[]), patch(__package__+'.prebuild.system') as mock_system, patch(__package__+'.prebuild.get_os', return_value=OS.CENTOS):
-            subject2()
-            mock_system.assert_called_once_with(packman+' install -y ')
-        with patch(__package__+'.prebuild.get_packman', return_value=packman), patch(__package__+'.prebuild.get_apps', return_value=[]), patch(__package__+'.prebuild.system') as mock_system, patch(__package__+'.prebuild.get_os', return_value=OS.UBUNTU):
+        with patch(__package__+'.prebuild.get_packman', return_value=packman), patch(__package__+'.prebuild.get_apps', return_value=[]), patch(__package__+'.prebuild.system') as mock_system, patch(__package__+'.prebuild.get_os', return_value=OS.LINUX):
             subject2()
             mock_system.assert_called_once_with(packman+' install -y ')
         with patch(__package__+'.prebuild.get_packman', return_value=packman), patch(__package__+'.prebuild.get_apps', return_value=[]), patch(__package__+'.prebuild.system') as mock_system, patch(__package__+'.prebuild.get_os', return_value=OS.WIN32):
@@ -109,6 +96,6 @@ class TestPrebuild(TestCase):
     def test_call_with_apps(self):
         packman = 'qwergfdsdewergff'
         apps = ['asdfdsfa', 'ghrgednrgesbfr']
-        with patch(__package__+'.prebuild.get_packman', return_value=packman), patch(__package__+'.prebuild.get_apps', return_value=apps), patch(__package__+'.prebuild.system') as mock_system, patch(__package__+'.prebuild.get_os', return_value=OS.CENTOS):
+        with patch(__package__+'.prebuild.get_packman', return_value=packman), patch(__package__+'.prebuild.get_apps', return_value=apps), patch(__package__+'.prebuild.system') as mock_system, patch(__package__+'.prebuild.get_os', return_value=OS.LINUX):
             subject2()
             mock_system.assert_called_once_with(packman+' install -y '+' '.join(apps))

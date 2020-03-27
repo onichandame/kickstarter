@@ -10,8 +10,8 @@ def get_apps():
         if app['type'] == Type.PACKMAN:
             _apps.append(name)
         if app['type'] == Type.SOURCE and 'dependency' in app:
-            for dep in app['dependency']:
-                _apps.append(dep['name'])
+            for dep in app['dependency'].keys():
+                _apps.append(dep)
     return list(dict.fromkeys(_apps))
 
 def prebuild():

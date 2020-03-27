@@ -14,8 +14,8 @@ class TestApps(TestCase):
                 self.assertIn('type', app)
                 self.assertIn(app['type'], Type)
                 if 'dependency' in app:
-                    for dep in app['dependency']:
-                        self.assertIn('name', dep)
+                    for dep in app['dependency'].values():
+                        self.assertIn('default', dep)
                 if app['type'] == Type.SOURCE:
                     self.assertIn('build', app)
         with patch(__package__+'.apps.get_argv') as mock_argv:

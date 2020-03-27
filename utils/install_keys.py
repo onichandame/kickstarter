@@ -4,7 +4,6 @@ from os import path, chmod, mkdir
 from os.path import exists, join
 from prompter import prompt, yesno
 
-from .get_os import get_os, OS
 from .get_home import get_home
 
 class KeyUrl():

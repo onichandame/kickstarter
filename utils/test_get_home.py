@@ -26,5 +26,5 @@ class TestGetHome(TestCase):
         home = homepath.split(sep)
         home[-1] = user
         home = sep.join(home)
-        with patch(__package__+'.get_home.get_os', return_value=OS.CENTOS), patch.dict(__package__+'.get_home.environ', HOME=homepath), patch(__package__+'.get_home.get_user', return_value=user):
+        with patch(__package__+'.get_home.get_os', return_value=OS.LINUX), patch.dict(__package__+'.get_home.environ', HOME=homepath), patch(__package__+'.get_home.get_user', return_value=user):
             self.assertEqual(subject(), join(sep, 'home', user))
